@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>STOCKS</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{% static 'js/graphify.js' %}"></script>
+</head>
+<body>
+<img src="{% static 'images/lclLogo.png' %}" style="width: 30%" class="img" alt="logo" width="256" height="128">
+
+<br/>
+
+<h1>HI THIS IS MY SUPER COOL WEATHER WEBSITE!</h1>
+
+<img src="data:image/png;base64,{{ temperature_chart }}" class="img" alt="temperature_chart">
+<br />
+<img src="data:image/png;base64,{{ humidity_chart }}" class="img" alt="humidity_chart">
+<br />
+<img src="data:image/png;base64,{{ pressure_chart }}" class="img" alt="pressure_chart">
+
+<br />
+<img src="{% static 'images/floppa.jpg' %}" class="img" alt="floppa" width="128" height="128">
+
+</body>
+</html>
