@@ -6,7 +6,6 @@
     <title>STOCKS</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="{% static 'js/graphify.js' %}"></script>
 </head>
 <body>
 <img src="{% static 'images/lclLogo.png' %}" style="width: 30%" class="img" alt="logo" width="256" height="128">
@@ -15,14 +14,103 @@
 
 <h1>HI THIS IS MY SUPER COOL WEATHER WEBSITE!</h1>
 
-<img src="data:image/png;base64,{{ temperature_chart }}" class="img" alt="temperature_chart">
-<br />
-<img src="data:image/png;base64,{{ humidity_chart }}" class="img" alt="humidity_chart">
-<br />
-<img src="data:image/png;base64,{{ pressure_chart }}" class="img" alt="pressure_chart">
+    <!-- <img src="data:image/png;base64,{{ temperature_chart }}" class="img" alt="temperature_chart">
+        <br />
+    <img src="data:image/png;base64,{{ humidity_chart }}" class="img" alt="humidity_chart">
+        <br />
+    <img src="data:image/png;base64,{{ pressure_chart }}" class="img" alt="pressure_chart"> -->
 
-<br />
-<img src="{% static 'images/floppa.jpg' %}" class="img" alt="floppa" width="128" height="128">
+        <br />
+    <div id="chart-temp"></div>
+        <br />
+    <div id="chart-hum"></div>
+        <br />
+    <div id="chart-press"></div>
+    <img src="{% static 'images/floppa.jpg' %}" class="img" alt="floppa" width="128" height="128">
+
+
+    <script>
+        var weatherData = JSON.parse('{{ weather_data|safe }}');
+        
+        var dates = weatherData.map(item => item.date);
+        var temperatures = weatherData.map(item => item.temperature);
+        var humidities = weatherData.map(item => item.humidity);
+        var pressures = weatherData.map(item => item.pressure);
+
+        var colors = {
+            temp: 'rgb(227, 66, 41)',
+            hum: 'rgb(49, 134, 245)',
+            press: 'rgb(120, 237, 81)'
+        };
+
+        // Temperature Chart
+        var temperatureTrace = {
+            x: dates,
+            y: temperatures,
+            type: 'scatter',
+            name: 'Temperature',
+            mode: 'lines',
+            line: { color: colors.temp },
+            };
+
+        var temperatureLayout = {
+            title: 'Temperature Data',
+            xaxis: {
+                title: 'Date'
+            },
+            yaxis: {
+                title: 'Temperature'
+            }
+        };
+
+        Plotly.newPlot('chart-temp', [temperatureTrace], temperatureLayout);
+
+        // Humidity Chart
+        var humidityTrace = {
+            x: dates,
+            y: humidities,
+            type: 'scatter',
+            name: 'Humidity',
+            mode: 'lines',
+            line: { color: colors.hum },
+        };
+
+
+        var humidityLayout = {
+            title: 'Humidity Data',
+            xaxis: {
+                title: 'Date'
+            },
+            yaxis: {
+                title: 'Humidity'
+            }
+        };
+
+        Plotly.newPlot('chart-hum', [humidityTrace], humidityLayout);
+
+        // Pressure Chart
+        var pressureTrace = {
+            x: dates,
+            y: pressures,
+            type: 'scatter',
+            name: 'Pressure',
+            mode: 'lines',
+            line: { color: colors.press },
+        };
+
+        var pressureLayout = {
+            title: 'Pressure Data',
+            xaxis: {
+                title: 'Date'
+            },
+            yaxis: {
+                title: 'Pressure'
+            }
+        };
+
+        Plotly.newPlot('chart-press', [pressureTrace], pressureLayout);
+    </script>
+
 
 </body>
 </html>

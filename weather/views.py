@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.db import connection
 from .models import Weather
+import json
 
 def index(request):
-    weather_data = Weather.objects.all()
+    weather_data = json.dumps(list(Weather.objects.values('date', 'temperature', 'humidity', 'pressure')), default=str)
 
     return render(request, 'index.html', {'weather_data': weather_data})
 
