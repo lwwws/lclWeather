@@ -21,12 +21,12 @@
   <li>Pressure: {{ next24h.pressure|default:"N/A" }} (hPa)</li>
 </ul>  
 
-<h2>Prediction for {{ next36.date|default:"N/A" }}:</h2>
+<h2>Prediction for {{ next36h.date|default:"N/A" }}:</h2>
 
 <ul>
-  <li>Temperature: {{ next36.temperature|default:"N/A" }} (°C)</li>
-  <li>Humidity: {{ next36.humidity|default:"N/A" }} (%)</li>
-  <li>Pressure: {{ next36.pressure|default:"N/A" }} (hPa)</li>
+  <li>Temperature: {{ next36h.temperature|default:"N/A" }} (°C)</li>
+  <li>Humidity: {{ next36h.humidity|default:"N/A" }} (%)</li>
+  <li>Pressure: {{ next36h.pressure|default:"N/A" }} (hPa)</li>
 </ul>  
 
     <!-- <img src="data:image/png;base64,{{ temperature_chart }}" class="img" alt="temperature_chart">

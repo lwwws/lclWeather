@@ -20,7 +20,7 @@ def update_weather():
     data.pressure = round(data.pressure, 3)
 
     conn = None
-    conn = sqlite3.connect('../db/weatherData.db')
+    conn = sqlite3.connect('/home/lwwws/lclWeather/db/weatherData')
     c = conn.cursor()
     now_str = (datetime.now()).strftime('%Y-%m-%d %H:%M')
 
@@ -41,8 +41,8 @@ def update_weather():
 
 def log_exception_to_file(exception):
     """Log the exception details to a file with a timestamped filename."""
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    file_path = f"logs/error_log_{current_time}.txt"
+    current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    file_path = f"/home/lwwws/lclWeather/cron/logs/error_log_{current_time}.txt"
     with open(file_path, "a") as file:
         file.write(f"Exception: {exception}\n")
         file.write(f"Exception type: {type(exception).__name__}\n\n")

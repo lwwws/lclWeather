@@ -1,0 +1,3 @@
+Exception: no such table: weather
+Exception type: OperationalError
+

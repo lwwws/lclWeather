@@ -3,8 +3,6 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-from sklearn.metrics import mean_absolute_error
-import numpy as np
 import pickle
 from datetime import datetime, timedelta
 import led
@@ -13,7 +11,7 @@ def fit_and_predict():
     led.setup_pins()
     led.turn_on(led.BLUE_PIN)
 
-    conn = sqlite3.connect('../db/weatherData.db')
+    conn = sqlite3.connect('/home/lwwws/lclWeather/db/weatherData')
     query = "SELECT * FROM weather"
     df = pd.read_sql_query(query, conn)
     conn.close()
@@ -182,7 +180,7 @@ def store(X, models24h, models36h, rmse24h, rmse36h, last_row_features):
         'rmse36h': rmse36h
     }
 
-    with open('artifacts.pkl', 'wb') as f:
+    with open('/home/lwwws/lclWeather/cron/artifacts.pkl', 'wb') as f:
         pickle.dump(artifacts, f)
 
     pred_temp_24h = models24h['temp'].predict(last_row_features)[0]
@@ -193,7 +191,7 @@ def store(X, models24h, models36h, rmse24h, rmse36h, last_row_features):
     pred_press_36h = models36h['press'].predict(last_row_features)[0]
 
     conn = None
-    conn = sqlite3.connect('../db/weatherData.db')
+    conn = sqlite3.connect('/home/lwwws/lclWeather/db/weatherData')
     c = conn.cursor()
     now_24h_str = (datetime.now() + timedelta(hours=24)).strftime('%Y-%m-%d %H:%M')
     now_36h_str = (datetime.now() + timedelta(hours=36)).strftime('%Y-%m-%d %H:%M')
@@ -213,8 +211,8 @@ def store(X, models24h, models36h, rmse24h, rmse36h, last_row_features):
 
 def log_exception_to_file(exception):
     """Log the exception details to a file with a timestamped filename."""
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    file_path = f"logs/error_log_{current_time}.txt"
+    current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    file_path = f"/home/lwwws/lclWeather/cron/logs/error_log_{current_time}.txt"
     with open(file_path, "a") as file:
         file.write(f"Exception: {exception}\n")
         file.write(f"Exception type: {type(exception).__name__}\n\n")
@@ -226,8 +224,8 @@ def main():
         fit_and_predict()
         led.flash_twice(led.GREEN_PIN)
     except Exception as e:
-        log_exception_to_file(e)
         led.cleanup()
+        log_exception_to_file(e)
         led.flash_heartbeat(led.RED_PIN)
 
 
