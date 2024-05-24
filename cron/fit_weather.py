@@ -7,8 +7,12 @@ from sklearn.metrics import mean_absolute_error
 import numpy as np
 import pickle
 from datetime import datetime, timedelta
+import led
 
 def fit_and_predict():
+    led.setup_pins()
+    led.turn_on(led.BLUE_PIN)
+
     conn = sqlite3.connect('../db/weatherData.db')
     query = "SELECT * FROM weather"
     df = pd.read_sql_query(query, conn)
@@ -145,6 +149,9 @@ def fit_and_predict():
 
     store(X, models24h, models36h, rmse24h, rmse36h, last_row_features)
 
+    led.turn_off(led.BLUE_PIN)
+    led.cleanup()
+
 def store(X, models24h, models36h, rmse24h, rmse36h, last_row_features):
     artifacts = {
         'feature_importances_temp_24h': pd.DataFrame({
@@ -204,10 +211,25 @@ def store(X, models24h, models36h, rmse24h, rmse36h, last_row_features):
     conn.close()
 
 
+def log_exception_to_file(exception):
+    """Log the exception details to a file with a timestamped filename."""
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    file_path = f"logs/error_log_{current_time}.txt"
+    with open(file_path, "a") as file:
+        file.write(f"Exception: {exception}\n")
+        file.write(f"Exception type: {type(exception).__name__}\n\n")
+    print(f"Exception details logged to: {file_path}")
 
 
 def main():
-    fit_and_predict()
+    try:
+        fit_and_predict()
+        led.flash_twice(led.GREEN_PIN)
+    except Exception as e:
+        log_exception_to_file(e)
+        led.cleanup()
+        led.flash_heartbeat(led.RED_PIN)
+
 
 
 if __name__ == '__main__':

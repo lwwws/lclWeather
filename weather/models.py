@@ -17,3 +17,14 @@ class Weather(models.Model):
     class Meta:
         managed = False
         db_table = 'weather'
+
+        
+class Prediction(models.Model):
+    date = models.DateTimeField(primary_key=True)
+    temperature = models.FloatField(blank=True, null=True)
+    humidity = models.FloatField(blank=True, null=True)
+    pressure = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'prediction'

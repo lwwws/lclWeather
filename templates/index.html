@@ -13,6 +13,21 @@
 <br/>
 
 <h1>HI THIS IS MY SUPER COOL WEATHER WEBSITE!</h1>
+<h2>Prediction for {{ next24h.date|default:"N/A" }}:</h2>
+
+<ul>
+  <li>Temperature: {{ next24h.temperature|default:"N/A" }} (°C)</li>
+  <li>Humidity: {{ next24h.humidity|default:"N/A" }} (%)</li>
+  <li>Pressure: {{ next24h.pressure|default:"N/A" }} (hPa)</li>
+</ul>  
+
+<h2>Prediction for {{ next36.date|default:"N/A" }}:</h2>
+
+<ul>
+  <li>Temperature: {{ next36.temperature|default:"N/A" }} (°C)</li>
+  <li>Humidity: {{ next36.humidity|default:"N/A" }} (%)</li>
+  <li>Pressure: {{ next36.pressure|default:"N/A" }} (hPa)</li>
+</ul>  
 
     <!-- <img src="data:image/png;base64,{{ temperature_chart }}" class="img" alt="temperature_chart">
         <br />

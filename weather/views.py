@@ -1,13 +1,17 @@
 from django.shortcuts import render
 from django.db import connection
-from .models import Weather
+from .models import Weather, Prediction
 import json
 
 def index(request):
     weather_data = json.dumps(list(Weather.objects.values('date', 'temperature', 'humidity', 'pressure')), default=str)
 
-    return render(request, 'index.html', {'weather_data': weather_data})
+    predictions_for_today = Prediction.objects.order_by('-date')[:2]
 
+    if len(predictions_for_today) == 2:
+        return render(request, 'index.html', {'weather_data': weather_data, 'next24h': predictions_for_today[1], 'next36h': predictions_for_today[0]})
+    else:
+        return render(request, 'index.html', {'weather_data': weather_data})
 
 # from django.shortcuts import render
 # from django.db import connection

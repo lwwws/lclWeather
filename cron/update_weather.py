@@ -2,6 +2,7 @@ import smbus2
 import bme280
 import sqlite3
 from datetime import datetime
+import led
 
 
 def update_weather():
@@ -38,8 +39,24 @@ def update_weather():
     print(f"{now_str}\ntemp={data.temperature} c\nhumidity={data.humidity} %rH\npressure={data.pressure} hPa")
 
 
+def log_exception_to_file(exception):
+    """Log the exception details to a file with a timestamped filename."""
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    file_path = f"logs/error_log_{current_time}.txt"
+    with open(file_path, "a") as file:
+        file.write(f"Exception: {exception}\n")
+        file.write(f"Exception type: {type(exception).__name__}\n\n")
+    print(f"Exception details logged to: {file_path}")
+
+
 def main():
-    update_weather()
+    try:
+        update_weather()
+        led.flash_twice(led.GREEN_PIN)
+    except Exception as e:
+        log_exception_to_file(e)
+        led.flash_heartbeat(led.RED_PIN)
+
 
 
 if __name__ == '__main__':
