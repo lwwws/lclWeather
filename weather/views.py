@@ -2,16 +2,34 @@ from django.shortcuts import render
 from django.db import connection
 from .models import Weather, Prediction
 import json
+import pickle
+import pandas as pd
+
+def load_artifacts():
+    with open('/home/lwwws/lclWeather/cron/artifacts.pkl', 'rb') as f:
+        artifacts = pickle.load(f)
+    
+    return artifacts
 
 def index(request):
     weather_data = json.dumps(list(Weather.objects.values('date', 'temperature', 'humidity', 'pressure')), default=str)
 
     predictions_for_today = Prediction.objects.order_by('-date')[:2]
+    args = {'weather_data': weather_data}
 
     if len(predictions_for_today) == 2:
-        return render(request, 'index.html', {'weather_data': weather_data, 'next24h': predictions_for_today[1], 'next36h': predictions_for_today[0]})
-    else:
-        return render(request, 'index.html', {'weather_data': weather_data})
+        args['next24h'] = predictions_for_today[1]
+        args['next36h'] = predictions_for_today[0]
+
+        artifacts = load_artifacts()
+
+        for key, val in artifacts.items():
+            if isinstance(val, pd.DataFrame):
+                artifacts[key] = val.to_dict(orient='records')
+        
+        args['artifacts'] = artifacts
+    
+    return render(request, 'index.html', args)
 
 # from django.shortcuts import render
 # from django.db import connection

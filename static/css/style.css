@@ -1,13 +1,36 @@
 body {
-  background-color: #B0E0E6;
+  background-color: #e2ffb4;
 }
 
 h1 {
-  color: blue;
+  color: #24782f;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   text-align: center;
 }
 
-.zui-table {
+h2{
+    color: #34ad44;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-align: center;
+}
+
+.prediction{
+    text-align: center;
+}
+
+ul{
+    text-align: center;
+    list-style-position: inside;
+    background-color: #ecffcc;
+    list-style-type: none;
+    margin: auto 20%;
+}
+
+#chart-temp, #chart-hum, #chart-press{
+    margin: auto 10%;
+}
+
+/* .zui-table {
     border: solid 1px #000000;
     border-collapse: collapse;
     border-spacing: 0;
@@ -27,6 +50,11 @@ h1 {
     text-shadow: 1px 1px 1px #fff;
 }
 
+td {
+    text-align: center;
+    font-weight: bold;
+} */
+
 .img{
     display: block;
     margin-left: auto;
@@ -34,7 +62,43 @@ h1 {
     width: 50%;
 }
 
-td {
-    text-align: center;
-    font-weight: bold;
-}
+
+
+* {
+    box-sizing: border-box;
+  }
+  
+  .row {
+    margin-left:-5px;
+    margin-right:-5px;
+  }
+    
+  .column {
+    float: left;
+    width: 33%;
+    padding: 2px;
+  }
+  
+  /* Clearfix (clear floats) */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+    background-color: #c0ff7d;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 3px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #d1ffa0;
+  }

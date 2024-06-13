@@ -3,46 +3,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>STOCKS</title>
+    <title>Weather</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-<img src="{% static 'images/lclLogo.png' %}" style="width: 30%" class="img" alt="logo" width="256" height="128">
+    <img src="{% static 'images/lclLogo.png' %}" style="width: 30%" class="img" alt="logo" width="256" height="128">
 
-<br/>
+    <br/>
 
-<h1>HI THIS IS MY SUPER COOL WEATHER WEBSITE!</h1>
-<h2>Prediction for {{ next24h.date|default:"N/A" }}:</h2>
+    <h1>HI THIS IS MY SUPER COOL WEATHER WEBSITE!</h1>
 
-<ul>
-  <li>Temperature: {{ next24h.temperature|default:"N/A" }} (°C)</li>
-  <li>Humidity: {{ next24h.humidity|default:"N/A" }} (%)</li>
-  <li>Pressure: {{ next24h.pressure|default:"N/A" }} (hPa)</li>
-</ul>  
+    <h2>Prediction for {{ next24h.date|default:"N/A" }}:</h2>
+    <ul>
+    <li>Temperature: {{ next24h.temperature|floatformat:3|default:"N/A" }} (°C)</li>
+    <li>Humidity: {{ next24h.humidity|floatformat:3|default:"N/A" }} (%)</li>
+    <li>Pressure: {{ next24h.pressure|floatformat:3|default:"N/A" }} (hPa)</li>
+    </ul>  
 
-<h2>Prediction for {{ next36h.date|default:"N/A" }}:</h2>
+    <h2>Prediction for {{ next36h.date|default:"N/A" }}:</h2>
+    <ul>
+    <li>Temperature: {{ next36h.temperature|floatformat:3|default:"N/A" }} (°C)</li>
+    <li>Humidity: {{ next36h.humidity|floatformat:3|default:"N/A" }} (%)</li>
+    <li>Pressure: {{ next36h.pressure|floatformat:3|default:"N/A" }} (hPa)</li>
+    </ul> 
+    <br />
 
-<ul>
-  <li>Temperature: {{ next36h.temperature|default:"N/A" }} (°C)</li>
-  <li>Humidity: {{ next36h.humidity|default:"N/A" }} (%)</li>
-  <li>Pressure: {{ next36h.pressure|default:"N/A" }} (hPa)</li>
-</ul>  
-
-    <!-- <img src="data:image/png;base64,{{ temperature_chart }}" class="img" alt="temperature_chart">
-        <br />
-    <img src="data:image/png;base64,{{ humidity_chart }}" class="img" alt="humidity_chart">
-        <br />
-    <img src="data:image/png;base64,{{ pressure_chart }}" class="img" alt="pressure_chart"> -->
-
-        <br />
     <div id="chart-temp"></div>
-        <br />
-    <div id="chart-hum"></div>
-        <br />
-    <div id="chart-press"></div>
-    <img src="{% static 'images/floppa.jpg' %}" class="img" alt="floppa" width="128" height="128">
+    <br />
 
+    <div id="chart-hum"></div>
+    <br />
+
+    <div id="chart-press"></div>
+    <br />
+
+    <h1>Artifacts</h1>
+
+    <div class="row">
+        <h2>Feature Importances (24h)</h2>
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Feature (Temperature)</th>
+                    <th>Importance (Temperature)</th>
+                </tr>
+                {% for row in artifacts.feature_importances_temp_24h %}
+                <tr>
+                    <td>{{ row.Feature }}</td>
+                    <td>{{ row.Importance }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="column">
+            <table>
+        <tr>
+            <th>Feature (Humidity)</th>
+            <th>Importance (Humidity)</th>
+        </tr>
+        {% for row in artifacts.feature_importances_hum_24h %}
+        <tr>
+            <td>{{ row.Feature }}</td>
+            <td>{{ row.Importance }}</td>
+        </tr>
+        {% endfor %}
+            </table>
+        </div>
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Feature (Pressure)</th>
+                    <th>Importance (Pressure)</th>
+                </tr>
+                {% for row in artifacts.feature_importances_press_24h %}
+                <tr>
+                    <td>{{ row.Feature }}</td>
+                    <td>{{ row.Importance }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <h2>Feature Importances (36h)</h2>
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Feature (Temperature)</th>
+                    <th>Importance (Temperature)</th>
+                </tr>
+                {% for row in artifacts.feature_importances_temp_36h %}
+                <tr>
+                    <td>{{ row.Feature }}</td>
+                    <td>{{ row.Importance }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Feature (Humidity)</th>
+                    <th>Importance (Humidity)</th>
+                </tr>
+                {% for row in artifacts.feature_importances_hum_36h %}
+                <tr>
+                    <td>{{ row.Feature }}</td>
+                    <td>{{ row.Importance }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+        <div class="column">
+            <table>
+                <tr>
+                    <th>Feature (Pressure)</th>
+                    <th>Importance (Pressure)</th>
+                </tr>
+                {% for row in artifacts.feature_importances_press_36h %}
+                <tr>
+                    <td>{{ row.Feature }}</td>
+                    <td>{{ row.Importance }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <h2>RMSE</h2>
+    
+    <ul>
+        <li>(24h) Temperature: {{ artifacts.rmse24h.temp|floatformat:3|default:"N/A" }}</li>
+        <li>(24h) Humidity: {{ artifacts.rmse24h.hum|floatformat:3|default:"N/A" }}</li>
+        <li> (24h)Pressure: {{ artifacts.rmse24h.press|floatformat:3|default:"N/A" }}</li>
+    </ul>  
+
+    <ul>
+        <li>(36h) Temperature: {{ artifacts.rmse36h.temp|floatformat:3|default:"N/A" }}</li>
+        <li>(36h) Humidity: {{ artifacts.rmse36h.hum|floatformat:3|default:"N/A" }}</li>
+        <li>(36h)Pressure: {{ artifacts.rmse36h.press|floatformat:3|default:"N/A" }}</li>
+    </ul> 
+    <br/>
+    
+    <img src="{% static 'images/floppa.jpg' %}" class="img" alt="floppa" width="128" height="128">
 
     <script>
         var weatherData = JSON.parse('{{ weather_data|safe }}');
@@ -125,7 +232,5 @@
 
         Plotly.newPlot('chart-press', [pressureTrace], pressureLayout);
     </script>
-
-
 </body>
 </html>
