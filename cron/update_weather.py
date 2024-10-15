@@ -3,12 +3,14 @@ import bme280
 import sqlite3
 from datetime import datetime
 import led
+import time
 
 
 def update_weather():
     port = 1
     address = 0x76
     bus = smbus2.SMBus(port)
+    time.sleep(1)
 
     calibration_params = bme280.load_calibration_params(bus, address)
 
@@ -44,7 +46,7 @@ def log_exception_to_file(exception):
     current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     file_path = f"/home/lwwws/lclWeather/cron/logs/error_log_{current_time}.txt"
     with open(file_path, "a") as file:
-        file.write(f"Exception: {exception}\n")
+        file.write(f"Exception updating weather: {exception}\n")
         file.write(f"Exception type: {type(exception).__name__}\n\n")
     print(f"Exception details logged to: {file_path}")
 

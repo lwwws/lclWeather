@@ -214,7 +214,7 @@ def log_exception_to_file(exception):
     current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     file_path = f"/home/lwwws/lclWeather/cron/logs/error_log_{current_time}.txt"
     with open(file_path, "a") as file:
-        file.write(f"Exception: {exception}\n")
+        file.write(f"Exception when fitting: {exception}\n")
         file.write(f"Exception type: {type(exception).__name__}\n\n")
     print(f"Exception details logged to: {file_path}")
 
