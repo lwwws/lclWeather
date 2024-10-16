@@ -3,5 +3,5 @@
 </p>
 <br/>
 <p align="center">
-  <img width="200" alt="lclWeatherLogo" src="https://github.com/user-attachments/assets/cb5955aa-ec3b-4d59-bc9b-aa6bdf0e723e">
+  <img width="300" alt="lclWeatherLogo" src="https://github.com/user-attachments/assets/cb5955aa-ec3b-4d59-bc9b-aa6bdf0e723e">
 </p>
